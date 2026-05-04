@@ -1,0 +1,30 @@
+import "dotenv/config";
+import express            from "express";
+import http               from "http";
+import { corsMiddleware } from "./middleware/cors";
+import { apiRateLimiter } from "./middleware/rateLimit";
+import { createWsServer } from "./websocket/wsServer";
+import researchRouter     from "./routes/research";
+import memoryRouter       from "./routes/memory";
+import sourcesRouter      from "./routes/sources";
+import statsRouter        from "./routes/stats";
+import { config }         from "./config";
+
+const app=express(), httpServer=http.createServer(app);
+app.use(corsMiddleware);
+app.use(express.json({limit:"1mb"}));
+app.use(apiRateLimiter as express.RequestHandler);
+app.get("/health",(_req,res)=>res.json({status:"ok",agent:"active",timestamp:new Date().toISOString(),env:config.nodeEnv}));
+const api=express.Router();
+api.use("/research",researchRouter);
+api.use("/memory",  memoryRouter);
+api.use("/sources", sourcesRouter);
+api.use("/stats",   statsRouter);
+app.use("/api/v1",api);
+app.use((_req,res)=>res.status(404).json({error:"Not found",code:"NOT_FOUND"}));
+app.use((err:Error,_req:express.Request,res:express.Response,_next:express.NextFunction)=>{ console.error("[Server]",err.message); res.status(500).json({error:"Internal error",code:"INTERNAL_ERROR"}); });
+createWsServer(httpServer);
+httpServer.listen(config.port,()=>{
+  console.log(`\n╔═══════════════════════════════════════╗\n║  NEXUS Backend running on :${config.port}      ║\n║  ENV : ${config.nodeEnv.padEnd(29)}║\n║  CORS: ${config.corsOrigin.padEnd(29)}║\n╚═══════════════════════════════════════╝\n`);
+});
+export default app;
