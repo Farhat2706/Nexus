@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+:root{
+  --void:#04050a;
+  --surface:rgba(10,16,36,0.85);
+  --glass:rgba(255,255,255,0.04);
+  --glass-border:rgba(255,255,255,0.08);
+  --glass-hover:rgba(255,255,255,0.07);
+  --cyan:#00d4ff;
+  --cyan-dim:rgba(0,212,255,0.15);
+  --violet:#7c5cfc;
+  --violet-dim:rgba(124,92,252,0.15);
+  --emerald:#00ffaa;
+  --emerald-dim:rgba(0,255,170,0.12);
+  --amber:#ffb347;
+  --red:#ff4757;
+  --text:#e8f0fe;
+  --text-muted:rgba(232,240,254,0.45);
+  --text-faint:rgba(232,240,254,0.2);
+  --font-display:'Syne',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --glow-cyan:0 0 20px rgba(0,212,255,0.4),0 0 60px rgba(0,212,255,0.15);
+  --glow-violet:0 0 20px rgba(124,92,252,0.4),0 0 60px rgba(124,92,252,0.15);
+  --card-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.07);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body,#root{height:100%;overflow:hidden}
+body{background:var(--void);font-family:var(--font-display);color:var(--text);cursor:none;}
+
+/* CURSOR */
+#cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--cyan);pointer-events:none;z-index:9999;mix-blend-mode:screen;transition:transform .1s;box-shadow:var(--glow-cyan);}
+#cursor-ring{position:fixed;width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,212,255,0.4);pointer-events:none;z-index:9998;transition:width .2s,height .2s,border-color .2s;}
+
+/* CARDS */
+.float-card{background:var(--surface);border:1px solid var(--glass-border);border-radius:20px;backdrop-filter:blur(24px);box-shadow:var(--card-shadow);position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.23,1,.32,1),box-shadow .3s;}
+.float-card::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 50%);pointer-events:none;}
+.float-card:hover{transform:translateY(-6px);box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.08);}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:10px;font-family:var(--font-mono);font-weight:500;letter-spacing:.5px;}
+.badge-cyan{background:var(--cyan-dim);border:1px solid rgba(0,212,255,0.3);color:var(--cyan)}
+.badge-violet{background:var(--violet-dim);border:1px solid rgba(124,92,252,0.3);color:#a78bfa}
+.badge-emerald{background:var(--emerald-dim);border:1px solid rgba(0,255,170,0.25);color:var(--emerald)}
+.badge-amber{background:rgba(255,179,71,0.12);border:1px solid rgba(255,179,71,0.25);color:var(--amber)}
+
+/* SPINNER */
+.think-spinner{width:12px;height:12px;border:2px solid rgba(124,92,252,0.3);border-top-color:var(--violet);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 6px var(--emerald)}50%{opacity:.5;box-shadow:none}}
+@keyframes msg-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes logo-breathe{0%,100%{box-shadow:var(--glow-violet)}50%{box-shadow:0 0 30px rgba(124,92,252,0.7),0 0 80px rgba(124,92,252,0.3)}}
+@keyframes ring-spin{to{transform:rotate(360deg)}}
+@keyframes orb-float{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,10px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
+
+/* BUTTONS */
+.btn{padding:12px 28px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:var(--font-display);transition:all .2s;letter-spacing:.3px;position:relative;overflow:hidden;}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--violet));color:var(--void);box-shadow:0 8px 32px rgba(0,212,255,0.3);}
+.btn-primary:hover{box-shadow:0 12px 40px rgba(0,212,255,0.5);transform:translateY(-2px);}
+.btn-ghost{background:var(--glass);border:1px solid var(--glass-border);color:var(--text);}
+.btn-ghost:hover{background:var(--glass-hover);border-color:rgba(0,212,255,0.3);}
